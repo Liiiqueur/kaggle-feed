@@ -27,19 +27,20 @@ README.md
 **2. Kaggle API 토큰 발급**
 
 kaggle.com → 우상단 프로필 → Settings → API → **Create New Token**.
-`kaggle.json` 이 다운로드되고, 안에 `username` 과 `key` 두 값이 있다.
+`KGAT_...` 형태의 토큰 문자열 하나가 발급된다. 다시 볼 수 없으니 그 자리에서 복사해 둔다.
 
 **3. 리포 시크릿에 등록**
 
 리포 → Settings → Secrets and variables → Actions → New repository secret.
-두 개를 만든다.
+하나만 만든다.
 
 | Name | Value |
 |---|---|
-| `KAGGLE_USERNAME` | 위 파일의 `username` |
-| `KAGGLE_KEY` | 위 파일의 `key` |
+| `KAGGLE_API_TOKEN` | 위에서 복사한 `KGAT_...` 토큰 전체 |
 
-다운로드한 `kaggle.json` 은 리포에 올리지 않는다. 시크릿에 넣었으면 지워도 된다.
+토큰은 시크릿에 등록한 뒤로는 어디에도 평문으로 남겨두지 않는다. 대화창이나 메모장에
+붙여넣었던 사본이 있다면 지운다 — 토큰이 그런 곳에 남았다고 의심되면 Kaggle 설정에서
+기존 토큰을 폐기하고 새로 하나 발급받아 시크릿 값만 갱신하면 된다.
 
 **4. 첫 실행**
 

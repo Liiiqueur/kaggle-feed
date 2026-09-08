@@ -26,8 +26,7 @@ jobs:
 
       - name: Kaggle 대회 목록 수집
         env:
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
         run: python fetch.py
 
       - name: 변경분만 커밋
