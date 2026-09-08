@@ -24,8 +24,9 @@ if not TOKEN:
 
 
 def get(page):
-    url = f"{API}?group=general&category=all&sortBy=latestDeadline&page={page}"
-    req = urllib.request.Request(url, headers={
+    # category=all 은 최신 API가 더 이상 받지 않는다 (HostSegment enum 오류).
+    # 파라미터를 아예 생략하면 카테고리 제한 없이 전체를 준다.
+    url = f"{API}?group=general&sortBy=latestDeadline&page={page}"    req = urllib.request.Request(url, headers={
         "Authorization": f"Bearer {TOKEN}",
         "User-Agent": "competition-radar/1.0",
         "Accept": "application/json",
