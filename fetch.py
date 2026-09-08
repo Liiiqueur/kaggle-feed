@@ -37,11 +37,12 @@ def get(page):
 
 
 def parse_prize(reward):
-    """'$25,000' -> 25000 USD. 'Knowledge'/'Swag'/None -> None."""
+    """'$25,000' 또는 '240,000 Usd' -> 25000 / 240000 (USD 정수).
+    'Knowledge'/'Swag'/None -> None."""
     if not reward or not isinstance(reward, str):
         return None
-    m = re.search(r"\$\s*([\d,]+)", reward)
-    if m:
+    m = re.search(r"[\$]?\s*([\d,]+)\s*(usd|\$)?", reward, re.IGNORECASE)
+    if m and re.search(r"\d", m.group(1)):
         return int(m.group(1).replace(",", ""))
     return None
 
