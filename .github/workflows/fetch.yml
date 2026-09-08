@@ -1,0 +1,43 @@
+name: kaggle-feed
+
+on:
+  schedule:
+    # 22:00 UTC = 07:00 KST — 레이더가 08:00에 읽으므로 1시간 여유를 둔다.
+    # GitHub 예약 실행은 부하에 따라 수십 분 밀릴 수 있어서 여유가 필요하다.
+    - cron: "0 22 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kaggle-feed
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Kaggle 대회 목록 수집
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: python fetch.py
+
+      - name: 변경분만 커밋
+        run: |
+          git config user.name "kaggle-feed"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kaggle.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "kaggle: $(date -u +%Y-%m-%d)"
+            git push
+          fi
